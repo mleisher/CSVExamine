@@ -61,4 +61,4 @@ Send bug reports and feature requests to the email address below.
 I may not get to them immediately, but I will get to them.
 
 ---
-© 2026 Mark Leisher <<mleisher@duck.com>>
+Copyright © 2026 Mark Leisher <<mleisher@duck.com>>
