@@ -54,6 +54,9 @@ If no matching format is found, an alert dialog comes up with instructions on wh
 
 I'm working on a smarter algorithm to automatically determine the format and create it dynamically.
 
+Support for right-to-left text in a left-to-right context mostly works if the cell values are enclosed.
+If there's enough interest, I may put some time into fixing some of minor glitches.
+
 Send bug reports and feature requests to the email address below.
 I may not get to them immediately, but I will get to them.
 
