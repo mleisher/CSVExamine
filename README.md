@@ -47,9 +47,9 @@ Any syntax errors in the configuration file will be shown in an alert dialog whe
 
 ### Example
 
-In the `test` directory, there is a sample file called `uparrow.csv`. If you open the file, this plugin will complain that it doesn't have a recognizable format. To add the format used in this file, edit the configuration file and add the following lines, save it, and restart Nextpad++.
+In the `test` directory, there is a sample file called `uparrow.csv`. If you open the file, this plugin will complain that it doesn't have a recognizable format. To add the format used in this file, edit the configuration file and add the following lines at the end, save it, and restart Nextpad++.
 ```
-\[Up Arrow\]
+[Up Arrow]
 delimiter="↑"
 encloseWith="‘"
 ```
