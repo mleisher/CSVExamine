@@ -6,7 +6,7 @@ This simple plugin started when a friend requested two things:
 - A way to show which
 column of large CSV files (*large number of columns and/or
 rows*) contains the cell the mouse is hovering over.
-* Be able to highlight a whole column to make it easier to see which
+* Be able to select a whole column with one click to make it easier to see which
 values are in the column (*values vary widely in size*).
 
 Eventually, support for UTF-8 text (*primarily mathematical symbols*)
