@@ -45,6 +45,14 @@ When the `Select Column` flag is enabled, this submenu allows you to save all th
 This menu option opens the `CSVExamine.ini` configuration file for editing. After making changes, save the file and restart Nextpad++.
 Any syntax errors in the configuration file will be shown in an alert dialog when Nextpad++ starts.
 
+### Example
+
+In the `test` directory, there is a sample file called `uparrow.csv`. If you open the file, this plugin will complain that it doesn't have a recognizable format. To add the format used in this file, edit the configuration file and add the following lines, save it, and restart Nextpad++.
+```[Up Arrow]
+delimiter="↑"
+encloseWith="‘"
+```
+
 ### Other Details
 
 This plugin will only look at files with names that end in `.csv` (*case-insensitive*). The menu is disabled for file names that do not end in `.csv`.
