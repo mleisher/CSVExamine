@@ -16,8 +16,10 @@ target_include_directories(CSVExamine PRIVATE
     ${NPP_PLUGIN_INCLUDE}
     ${SCINTILLA_INCLUDE})
 target_link_libraries(CSVExamine PRIVATE "-framework Cocoa")
-set(PLUGIN_INSTALL_DIR "$ENV{HOME}/.nextpad++/plugins/CSVExamine")
-set(PLUGIN_CONFIG_DIR "$ENV{HOME}/.nextpad++/plugins/Config")
+#set(PLUGIN_INSTALL_DIR "$ENV{HOME}/.nextpad++/plugins/CSVExamine")
+#set(PLUGIN_CONFIG_DIR "$ENV{HOME}/.nextpad++/plugins/Config")
+set(PLUGIN_INSTALL_DIR "$ENV{HOME}/Library/Application Support/Nextpad++/plugins/CSVExamine")
+set(PLUGIN_CONFIG_DIR "$ENV{HOME}/Library/Application Support/Nextpad++/plugins/Config")
 set_target_properties(CSVExamine PROPERTIES PREFIX "" SUFFIX ".dylib")
 install(TARGETS CSVExamine DESTINATION "${PLUGIN_INSTALL_DIR}")
 install(FILES CSVExamine.ini DESTINATION "${PLUGIN_CONFIG_DIR}")
