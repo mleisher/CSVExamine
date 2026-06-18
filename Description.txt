@@ -1,0 +1,9 @@
+A simple plugin to show the header text and coordinates of any cell in a CSV file. For CSV files with column data that varies a lot in size.
+
+Features:
+- Hovering over a cell brings up a tooltip showing text from column header (row 1) and cell coordinates (tooltip format configurable).
+- Optional: Click on a cell to select a column.
+- Optional: If click-to-select-column is enabled, copy column to clipboard vertically (newline separated) or horizontally (delimiter separated).
+- Automatic detection of .csv file formats based on a common set of delimiters (the list of delimiters is configurable).
+- Formats can be easily defined in the configuration file.
+- Supports different languages and symbols (in cell text, delimiters, and enclosers) by being UTF-8 aware.
