@@ -296,6 +296,7 @@ static id g_ButtonEventMonitor = nil;
 //
 static void addButtonEventMonitor();
 static void removeButtonEventMonitor();
+static void showAlert(NSString *title, NSString *message);
 
 //
 // Log to the file specified in the config file.
@@ -543,10 +544,8 @@ static CSVExamineFormat *detectFormat(char *path) {
 static void handleBufferChange(NppHandle h, NSUInteger bufferID, int view) {
   CSVExamineBuffer *buffer = NULL;
 
-  if (g_CurrentBuffer != NULL) {
-    if (g_CurrentBuffer->id == bufferID)
-      return;
-  }
+  if (g_CurrentBuffer != NULL && g_CurrentBuffer->id == bufferID)
+    return;
 
   // Set the current view, no matter what buffer is active.
   g_CurrentView = view;
@@ -565,16 +564,19 @@ static void handleBufferChange(NppHandle h, NSUInteger bufferID, int view) {
 	sci(h, SCI_INDICSETFORE, g_CurrentBuffer->indicator, 0x0000ff);
       }
     } else {
+      // Have to remove the button event handler when switching to a new buffer.
+      removeButtonEventMonitor();
+      
       char bpath[MAX_PATH] = {0};
 
       // Get the filename from the buffer so we can check the extension.
       nppData._sendMessage(nppData._nppHandle, NPPM_GETFILENAME,
 			   (uintptr_t) bufferID, (intptr_t)bpath);
+      //logit([NSString stringWithFormat:@"%s %lu\n", bpath, bufferID]);
       if ([[@(bpath) pathExtension] caseInsensitiveCompare:@"csv"] == NSOrderedSame) {
 	// Add it to the bufferList only if it's a CSV file.
 	buffer = new CSVExamineBuffer();
 	buffer->id = bufferID;
-	buffer->selectColumn = g_Globals.selectColumn;
 
 	// Create the custom indicator for the buffer.
 	NppHandle h = getCurrentScintilla();
@@ -583,6 +585,7 @@ static void handleBufferChange(NppHandle h, NSUInteger bufferID, int view) {
 	sci(h, SCI_INDICSETFORE, buffer->indicator, 0x0000ff);
 
 	buffer->format = detectFormat(bpath);
+	buffer->selectColumn = (buffer->format == NULL) ? false : g_Globals.selectColumn;
 	bufferList[bufferID] = buffer;
 
 	if (buffer->format == NULL)
@@ -593,6 +596,9 @@ static void handleBufferChange(NppHandle h, NSUInteger bufferID, int view) {
 	g_CurrentBuffer = NULL;
 	[g_Globals.plugin setEnabled:NO];
       }
+      // Add the button event handler when switching to a new buffer.
+      addButtonEventMonitor();
+
     }
   }
   if (g_CurrentBuffer != NULL) {
@@ -636,8 +642,8 @@ static void toggleSelectColumn() {
 //
 // Config file loading/saving.
 //
-static BOOL haveConfigFile() {
-  if (g_configPath != NULL) return YES;
+static bool haveConfigFile() {
+  if (g_configPath != NULL) return true;
 
   NSUInteger size =
     (NSUInteger) nppData._sendMessage(nppData._nppHandle, NPPM_GETPLUGINSCONFIGDIR, MAX_PATH, (LPARAM)g_charPath);
@@ -898,8 +904,10 @@ static void removeButtonEventMonitor() {
 - (void)chooseFormat:(id)sender {
   NSMenuItem *item = (NSMenuItem *) sender;
   id rov = [item representedObject];
-  if ([rov isKindOfClass:[NSNumber class]])
+  if ([rov isKindOfClass:[NSNumber class]]) {
     g_CurrentBuffer->format = formatList[[rov unsignedIntegerValue]];
+    g_CurrentBuffer->selectColumn = g_Globals.selectColumn;
+  }
 }
 @end
 
@@ -1230,6 +1238,7 @@ extern "C" NPP_EXPORT void beNotified(SCNotification *n) {
     sci(h, SCI_SETMOUSEDWELLTIME, 500);
 
     handleBufferChange(h, bufferID, view);
+
     if (g_CurrentBuffer == NULL)
       removeButtonEventMonitor();
     else if (g_ButtonEventMonitor == nil && g_CurrentBuffer->selectColumn)
